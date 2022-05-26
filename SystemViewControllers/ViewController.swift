@@ -9,7 +9,10 @@ import UIKit
 import SafariServices
 import MessageUI
 
-class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, MFMailComposeViewControllerDelegate {
+class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate {
+    
+    
+    
 
     @IBOutlet var imageView: UIImageView!
     
@@ -92,6 +95,20 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func messageButtonTapped(_ sender: UIButton) {
+        guard MFMessageComposeViewController.canSendText() else { print("SMS services are not avalaible")
+            return
+        }
+        let smsComposeVC = MFMessageComposeViewController()
+        smsComposeVC.messageComposeDelegate = self
+        smsComposeVC.recipients = [""]
+        smsComposeVC.body = ""
+        present(smsComposeVC, animated: true, completion: nil)
+    }
+    
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        controller.dismiss(animated: true, completion: nil)
+    }
     
 }
 
